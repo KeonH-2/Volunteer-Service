@@ -8,13 +8,16 @@ public class ReservationManager {
 
     public void makeReservation(String userId) {
         // 예약 로직
+    	System.out.println(".");
     }
 
     public void showMyReservations(String userId) {
         // 마이페이지 조회
+    	System.out.println(".");
     }
 
     public void cancelReservation(String userId) {
         // 예약 취소 로직
+    	System.out.println(".");
     }
 }
