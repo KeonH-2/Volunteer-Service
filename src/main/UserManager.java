@@ -8,7 +8,25 @@ public class UserManager {
     private final String USER_FILE = "users.txt";
 
     public void loadUsers() {
-        // 파일로부터 사용자 정보 로드
+    	File file = new File(USER_FILE);
+        if (!file.exists()) return;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // 파일 형식: name,phoneNumber,id,password
+                String[] tokens = line.split(",");
+                if (tokens.length == 4) {
+                    String name = tokens[0];
+                    String phoneNumber = tokens[1];
+                    String id = tokens[2];
+                    String password = tokens[3];
+                    users.add(new User(name, phoneNumber, id, password));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("사용자 정보 불러오기 실패: " + e.getMessage());
+        }
     }
 
     public void saveUsers() {
