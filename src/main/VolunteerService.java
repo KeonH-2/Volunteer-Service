@@ -29,11 +29,11 @@ public class VolunteerService {
                     loggedInUser = userManager.login();
                     break;
                 case "3":
-                    if (loggedInUser != null)
-                        reservationManager.makeReservation(loggedInUser.getId());
-                    else
-                        System.out.println("먼저 로그인해주세요.");
-                    break;
+//                    if (loggedInUser != null)
+//                        reservationManager.makeReservation(loggedInUser.getId());
+//                    else
+//                        System.out.println("먼저 로그인해주세요.");
+//                    break;
                 case "4":
                     if (loggedInUser != null)
                         reservationManager.showMyReservations(loggedInUser.getId());
