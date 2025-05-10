@@ -72,8 +72,21 @@ public class UserManager {
         System.out.println("회원가입이 완료되었습니다.");
     }
 
-    public User login() {
-        // 로그인 로직 후 성공 시 User 반환
+    public User login() {        
+        System.out.print("아이디를 입력하세요: ");
+        String inputId = scanner.nextLine();
+        
+        System.out.print("비밀번호를 입력하세요: ");
+        String inputPw = scanner.nextLine();
+        
+        for (User user : users) {
+            if (user.getId().equals(inputId) && user.getPassword().equals(inputPw)) {
+                System.out.println(user.getName() + "님, 로그인 성공!");
+                return user;
+            }
+        }
+
+        System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
         return null;
     }
 
