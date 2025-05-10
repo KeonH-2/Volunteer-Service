@@ -6,6 +6,7 @@ import java.util.*;
 public class UserManager {
     private List<User> users = new ArrayList<>();
     private final String USER_FILE = "users.txt";
+    private Scanner scanner = new Scanner(System.in);
 
     public void loadUsers() {
     	File file = new File(USER_FILE);
@@ -34,7 +35,34 @@ public class UserManager {
     }
 
     public void registerUser() {
-        // 회원가입 로직
+    	System.out.println("\n[회원가입]");
+        System.out.print("이름: ");
+        String name = scanner.nextLine();
+        System.out.print("전화번호: ");
+        String phoneNumber = scanner.nextLine();
+        System.out.print("아이디: ");
+        String id = scanner.nextLine();
+        System.out.print("비밀번호: ");
+        String password = scanner.nextLine();
+
+        // 아이디 중복 확인
+        for (User phonenumber : users) {
+            if (user.getPhonenumber().equals(phoneNumber)) {
+                System.out.println("이미 존재하는 아이디입니다.");
+                return;
+            }
+        }
+        
+        for (User user : users) {
+            if (user.getId().equals(id)) {
+                System.out.println("이미 존재하는 아이디입니다.");
+                return;
+            }
+        }
+
+        User newUser = new User(name, phoneNumber, id, password);
+        users.add(newUser);
+        System.out.println("회원가입이 완료되었습니다.");
     }
 
     public User login() {
