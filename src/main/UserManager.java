@@ -81,7 +81,7 @@ public class UserManager {
         
         for (User user : users) {
             if (user.getId().equals(inputId) && user.getPassword().equals(inputPw)) {
-                System.out.println(user.getName() + "님, 로그인 성공!");
+                System.out.println(user.getName() + "님 로그인 성공");
                 return user;
             }
         }
