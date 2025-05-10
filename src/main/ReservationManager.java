@@ -7,7 +7,7 @@ public class ReservationManager {
     private Map<String, List<String>> reservations = new HashMap<>();
     private Map<String, Integer> maxParticipants = new HashMap<>();
     private Map<String, String> programDates = new HashMap<>();
-    private Scanner scanner = new Scanner(System.in); // 누락된 부분
+    private Scanner scanner = new Scanner(System.in); 
 
     public void makeReservation(String userId) {
         System.out.println("[봉사 프로그램 목록]");
