@@ -72,9 +72,7 @@ public class UserManager {
         System.out.println("회원가입이 완료되었습니다.");
     }
 
-    public User login() {
-    	Scanner scanner = new Scanner(System.in);
-        
+    public User login() {        
         System.out.print("아이디를 입력하세요: ");
         String inputId = scanner.nextLine();
         
@@ -95,4 +93,6 @@ public class UserManager {
     public List<User> getUsers() {
         return users;
     }
+
+    scanner.close();
 }
