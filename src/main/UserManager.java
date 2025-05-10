@@ -31,7 +31,15 @@ public class UserManager {
     }
 
     public void saveUsers() {
-        // 사용자 정보 파일에 저장
+    	try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE))) {
+            for (User user : users) {
+                String line = String.join(",", user.getName(), user.getPhonenumber(), user.getId(), user.getPassword());
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("사용자 정보 저장 실패: " + e.getMessage());
+        }
     }
 
     public void registerUser() {
