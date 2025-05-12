@@ -62,6 +62,14 @@ public class ReservationManager {
         }
 
         List<String> currentParticipants = reservations.getOrDefault(selectedProgram, new ArrayList<>());
+
+        // 중복 신청 방지 코드
+        if (currentParticipants.contains(userId)) {
+            System.out.println("이미 해당 프로그램에 신청하셨습니다.");
+            return;
+        }
+
+        // 인원 초과 확인
         if (currentParticipants.size() >= maxParticipants.getOrDefault(selectedProgram, 0)) {
             System.out.println("신청 인원이 모두 찼습니다.");
             return;
