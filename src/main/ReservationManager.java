@@ -11,7 +11,18 @@ public class ReservationManager {
     private Map<String, String> programDates = new HashMap<>();
     private Scanner scanner = new Scanner(System.in);
     private String choice;
-    private List<String> programs = Arrays.asList("환경 정화", "길거리 캠페인"); // 임시 출력용 리스트
+    
+    // 임시 출력용 리스트
+    private List<String> programs = Arrays.asList("환경 정화", "길거리 캠페인");
+    public ReservationManager() {
+        maxParticipants.put("환경 정화", 5);
+        maxParticipants.put("노인 복지관 보조", 3);
+        maxParticipants.put("길거리 캠페인", 4);
+
+        programDates.put("환경 정화", "2025-06-01");
+        programDates.put("노인 복지관 보조", "2025-06-01");
+        programDates.put("길거리 캠페인", "2025-06-02");
+    }
 
     // ===== 봉사 신청 =====
     public void makeReservation(String userId) {

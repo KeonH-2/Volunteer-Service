@@ -29,10 +29,6 @@ public class User {
     	return password;
     }
     
-    void setName() {
-    	this.name = name;
-    }
-    
     void setPhonenumber() {
     	this.phonenumber = phonenumber;
     }
