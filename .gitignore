@@ -54,3 +54,4 @@ target/
 .DS_Store
 .DS_Store
 users.txt
+/.metadata/

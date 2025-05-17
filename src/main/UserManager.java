@@ -1,49 +1,52 @@
 package main;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.util.*;
 
 public class UserManager {
     private List<User> users = new ArrayList<>();
-    private final String USER_FILE = "users.txt";
+    private final String USER_FILE = "users.json";
     private Scanner scanner = new Scanner(System.in);
 
     public void loadUsers() {
-    	File file = new File(USER_FILE);
-        if (!file.exists()) return;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(USER_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // 파일 형식: name,phoneNumber,id,password
-                String[] tokens = line.split(",");
-                if (tokens.length == 4) {
-                    String name = tokens[0];
-                    String phoneNumber = tokens[1];
-                    String id = tokens[2];
-                    String password = tokens[3];
-                    users.add(new User(name, phoneNumber, id, password));
-                }
+        users.clear();
+        try (FileReader reader = new FileReader(USER_FILE)) {
+            JSONArray userArray = (JSONArray) new JSONParser().parse(reader);
+            for (Object o : userArray) {
+                JSONObject obj = (JSONObject) o;
+                String name = (String) obj.get("name");
+                String phonenumber = (String) obj.get("phonenumber");
+                String id = (String) obj.get("id");
+                String password = (String) obj.get("password");
+                int hours = obj.get("totalVolunteerHours") == null ? 0 : ((Long) obj.get("totalVolunteerHours")).intValue();
+                User user = new User(name, phonenumber, id, password);
+                user.setTotalVolunteerHours(hours);
+                users.add(user);
             }
-        } catch (IOException e) {
-            System.out.println("사용자 정보 불러오기 실패: " + e.getMessage());
-        }
+        } catch (Exception e) { /* 파일 없을 때 등 무시 */ }
     }
 
     public void saveUsers() {
-    	try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_FILE))) {
-            for (User user : users) {
-                String line = String.join(",", user.getName(), user.getPhonenumber(), user.getId(), user.getPassword());
-                writer.write(line);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("사용자 정보 저장 실패: " + e.getMessage());
+        JSONArray userArray = new JSONArray();
+        for (User user : users) {
+            JSONObject obj = new JSONObject();
+            obj.put("name", user.getName());
+            obj.put("phonenumber", user.getPhonenumber());
+            obj.put("id", user.getId());
+            obj.put("password", user.getPassword());
+            obj.put("totalVolunteerHours", user.getTotalVolunteerHours());
+            userArray.add(obj);
         }
+        try (FileWriter file = new FileWriter(USER_FILE)) {
+            file.write(userArray.toJSONString());
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public void registerUser() {
-    	System.out.println("\n[회원가입]");
+        System.out.println("\n[회원가입]");
         System.out.print("이름: ");
         String name = scanner.nextLine();
         System.out.print("전화번호: ");
@@ -58,39 +61,35 @@ public class UserManager {
                 System.out.println("이미 존재하는 전화번호입니다.");
                 return;
             }
-        }
-        
-        for (User user : users) {
             if (user.getId().equals(id)) {
                 System.out.println("이미 존재하는 아이디입니다.");
                 return;
             }
         }
-
         User newUser = new User(name, phoneNumber, id, password);
         users.add(newUser);
+        saveUsers();
         System.out.println("회원가입이 완료되었습니다.");
     }
 
-    public User login() {        
+    public User login() {
         System.out.print("아이디를 입력하세요: ");
         String inputId = scanner.nextLine();
-        
         System.out.print("비밀번호를 입력하세요: ");
         String inputPw = scanner.nextLine();
-        
         for (User user : users) {
             if (user.getId().equals(inputId) && user.getPassword().equals(inputPw)) {
                 System.out.println(user.getName() + "님, 로그인 성공!");
                 return user;
             }
         }
-
         System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
         return null;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<User> getUsers() { return users; }
+    public User getUserById(String id) {
+        for (User u : users) if (u.getId().equals(id)) return u;
+        return null;
     }
 }
