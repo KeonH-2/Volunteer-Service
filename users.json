@@ -1,0 +1,16 @@
+[
+  {
+    "password": "bbb",
+    "totalVolunteerHours": 0,
+    "name": "김건희",
+    "phonenumber": "01085032005",
+    "id": "aaa"
+  },
+  {
+    "password": "www",
+    "totalVolunteerHours": 0,
+    "name": "a",
+    "phonenumber": "111",
+    "id": "qqq"
+  }
+]

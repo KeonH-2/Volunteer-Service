@@ -128,7 +128,7 @@ public class ReservationManager {
     }
 
     // 마이페이지: 내 예약 보기 및 취소
-    public void showMyReservations(String userId, VolunteerProgramManager vpm) {
+    public void showMyReservations(String userId, VolunteerProgramManager vpm, UserManager userManager) {
         List<String> myPrograms = new ArrayList<>();
         for (String program : reservations.keySet()) {
             if (reservations.get(program).contains(userId)) myPrograms.add(program);
@@ -144,14 +144,14 @@ public class ReservationManager {
         System.out.println("봉사 예약을 취소하시겠습니까?(Y/N) >> ");
         String choice = scanner.nextLine();
         if (choice.equalsIgnoreCase("Y")) {
-            cancelReservation(userId, vpm, myPrograms);
+            cancelReservation(userId, vpm, myPrograms, userManager);
         } else {
             System.out.println("메인화면으로 돌아갑니다.");
         }
     }
 
     // 예약 취소
-    public void cancelReservation(String userId, VolunteerProgramManager vpm, List<String> myPrograms) {
+    public void cancelReservation(String userId, VolunteerProgramManager vpm, List<String> myPrograms, UserManager userManager) {
         System.out.println("예약을 취소하고 싶은 봉사의 번호를 입력해주세요 >> ");
         int reservnum;
         try {
@@ -169,7 +169,12 @@ public class ReservationManager {
                 String nextUser = waiters.remove(0);
                 reservations.get(programToCancel).add(nextUser);
                 waitingList.put(programToCancel, waiters);
-                System.out.println("대기자 " + nextUser + "님이 예약자로 승격되었습니다.");
+                // 승격된 사용자에게 알림 추가
+                User promotedUser =userManager.getUserById(nextUser);
+                if (promotedUser != null) {
+                    promotedUser.addNotification("[" + programToCancel + "] 봉사 예약이 대기에서 확정되었습니다!");
+                }
+                // 여기서는 메시지 출력하지 않음
             }
             saveReservations();
             System.out.println("예약이 취소되었습니다.");

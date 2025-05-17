@@ -50,7 +50,7 @@ public class VolunteerService {
                     break;
                 case "6":
                     if (loggedInUser != null)
-                        reservationManager.showMyReservations(loggedInUser.getId(), programManager);
+                        reservationManager.showMyReservations(loggedInUser.getId(), programManager, userManager);
                     else
                         System.out.println("먼저 로그인해주세요.");
                     break;

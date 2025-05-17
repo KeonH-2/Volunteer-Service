@@ -1,11 +1,15 @@
 package main;
 
+import java.util.*;
+
 public class User {
     private String name;
     private String phonenumber;
     private String id;
     private String password;
     private int totalVolunteerHours;
+    private List<String> notifications = new ArrayList<>();
+
 
     public User(String name, String phonenumber, String id, String password) {
         this.name = name;
@@ -41,5 +45,17 @@ public class User {
     
     public void setTotalVolunteerHours(int hours) { 
     	this.totalVolunteerHours = hours; 
+    }
+        
+    public List<String> getNotifications() { 
+    	return notifications; 
+    }
+    
+    public void addNotification(String msg) { 
+    	notifications.add(msg); 
+    }
+    
+    public void clearNotifications() { 
+    	notifications.clear(); 
     }
 }

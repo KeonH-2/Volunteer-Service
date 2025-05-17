@@ -80,6 +80,14 @@ public class UserManager {
         for (User user : users) {
             if (user.getId().equals(inputId) && user.getPassword().equals(inputPw)) {
                 System.out.println(user.getName() + "님, 로그인 성공!");
+                if (user.getNotifications().size() > 0) {
+                    System.out.println("== 알림 ==");
+                    for (String msg : user.getNotifications()) {
+                        System.out.println(msg);
+                    }
+                    user.clearNotifications();
+                    saveUsers(); // 알림 비우기 반영
+                }
                 return user;
             }
         }
@@ -87,7 +95,10 @@ public class UserManager {
         return null;
     }
 
-    public List<User> getUsers() { return users; }
+    public List<User> getUsers() { 
+    	return users; 
+    }
+    
     public User getUserById(String id) {
         for (User u : users) if (u.getId().equals(id)) return u;
         return null;
