@@ -9,9 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ReservationManager {
-    // <프로그램명, 예약자ID리스트>
     private Map<String, List<String>> reservations = new HashMap<>();
-    // <프로그램명, 대기자ID리스트>
     private Map<String, List<String>> waitingList = new HashMap<>();
     private final String FILE_NAME = "reservations.json";
     private Scanner scanner = new Scanner(System.in);
@@ -65,7 +63,6 @@ public class ReservationManager {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // 봉사 신청
     public void makeReservation(String userId, VolunteerProgramManager vpm) {
         List<VolunteerProgram> programs = vpm.getPrograms();
         System.out.println("[봉사 프로그램 목록]");
@@ -170,11 +167,11 @@ public class ReservationManager {
                 reservations.get(programToCancel).add(nextUser);
                 waitingList.put(programToCancel, waiters);
                 // 승격된 사용자에게 알림 추가
-                User promotedUser =userManager.getUserById(nextUser);
+                User promotedUser = userManager.getUserById(nextUser);
                 if (promotedUser != null) {
                     promotedUser.addNotification("[" + programToCancel + "] 봉사 예약이 대기에서 확정되었습니다!");
+                    userManager.saveUsers();
                 }
-                // 여기서는 메시지 출력하지 않음
             }
             saveReservations();
             System.out.println("예약이 취소되었습니다.");

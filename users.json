@@ -1,16 +1,1 @@
-[
-  {
-    "password": "bbb",
-    "totalVolunteerHours": 0,
-    "name": "김건희",
-    "phonenumber": "01085032005",
-    "id": "aaa"
-  },
-  {
-    "password": "www",
-    "totalVolunteerHours": 0,
-    "name": "a",
-    "phonenumber": "111",
-    "id": "qqq"
-  }
-]
+[{"password":"a","totalVolunteerHours":0,"name":"aaa","phonenumber":"010","id":"a","isAdmin":false,"notifications":[]},{"password":"b","totalVolunteerHours":0,"name":"2","phonenumber":"0101","id":"b","isAdmin":true,"notifications":[]}]

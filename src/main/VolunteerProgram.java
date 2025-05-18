@@ -17,27 +17,10 @@ public class VolunteerProgram {
         this.hours = hours;
     }
 
-    public String getName() { 
-    	return name; 
-    }
-    
-    public String getDate() { 
-    	return date; 
-   	}
-    
-    public String getLocation() { 
-    	return location; 
-    }
-    
-    public String getCategory() { 
-    	return category; 
-    }
-    
-    public int getMaxParticipants() { 
-    	return maxParticipants; 
-    }
-    
-    public int getHours() { 
-    	return hours; 
-    }
+    public String getName() { return name; }
+    public String getDate() { return date; }
+    public String getLocation() { return location; }
+    public String getCategory() { return category; }
+    public int getMaxParticipants() { return maxParticipants; }
+    public int getHours() { return hours; }
 }

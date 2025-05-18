@@ -10,21 +10,17 @@ public class VolunteerService {
     private static User loggedInUser = null;
 
     public static void main(String[] args) {
-        // 데이터 로드
         userManager.loadUsers();
         programManager.loadPrograms();
         reservationManager.loadReservations();
-
+        
+        reservationManager.confirmReservations(programManager, userManager);
+        
         while (true) {
             System.out.println("\n==== 봉사 신청 시스템 ====");
             System.out.println("1. 회원가입");
             System.out.println("2. 로그인");
-            System.out.println("3. 봉사 프로그램 등록 (관리자)");
-            System.out.println("4. 봉사 프로그램 조회/필터");
-            System.out.println("5. 예약 신청");
-            System.out.println("6. 마이페이지(내 예약/취소)");
-            System.out.println("7. 24시간 전 예약 확정 (관리자)");
-            System.out.println("8. 프로그램 종료");
+            System.out.println("3. 프로그램 종료");
             System.out.print("선택 > ");
             String choice = scanner.nextLine();
 
@@ -34,36 +30,77 @@ public class VolunteerService {
                     break;
                 case "2":
                     loggedInUser = userManager.login();
+                    if (loggedInUser != null) {
+                        if (loggedInUser.isAdmin()) {
+                            adminLoop();
+                        } else {
+                            userLoop();
+                        }
+                    }
                     break;
                 case "3":
-                    // 관리자만 등록 가능하도록 하고 싶으면 로그인 후 관리자 체크 추가
-                    programManager.uploadProgram();
-                    break;
-                case "4":
-                    filterAndShowPrograms();
-                    break;
-                case "5":
-                    if (loggedInUser != null)
-                        reservationManager.makeReservation(loggedInUser.getId(), programManager);
-                    else
-                        System.out.println("먼저 로그인해주세요.");
-                    break;
-                case "6":
-                    if (loggedInUser != null)
-                        reservationManager.showMyReservations(loggedInUser.getId(), programManager, userManager);
-                    else
-                        System.out.println("먼저 로그인해주세요.");
-                    break;
-                case "7":
-                    // 관리자만 가능하게 하고 싶으면 권한 체크 추가
-                    reservationManager.confirmReservations(programManager, userManager);
-                    break;
-                case "8":
-                    // 데이터 저장
                     userManager.saveUsers();
                     programManager.savePrograms();
                     reservationManager.saveReservations();
                     System.out.println("프로그램을 종료합니다.");
+                    return;
+                default:
+                    System.out.println("잘못된 입력입니다.");
+            }
+        }
+    }
+
+    // 관리자 메뉴
+    private static void adminLoop() {
+        while (true) {
+            System.out.println("\n==== 관리자 메뉴 ====");
+            System.out.println("1. 봉사 프로그램 등록");
+            System.out.println("2. 봉사 프로그램 조회/필터");
+            System.out.println("3. 로그아웃");
+            System.out.print("선택 > ");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    programManager.uploadProgram();
+                    break;
+                case "2":
+                    filterAndShowPrograms();
+                    break;
+                case "3":
+                    loggedInUser = null;
+                    return;
+                default:
+                    System.out.println("잘못된 입력입니다.");
+            }
+        }
+    }
+
+    // 봉사자 메뉴
+    private static void userLoop() {
+        while (true) {
+            System.out.println("\n==== 봉사자 메뉴 ====");
+            System.out.println("1. 봉사 프로그램 조회/필터");
+            System.out.println("2. 예약 신청");
+            System.out.println("3. 마이페이지(내 예약/취소)");
+            System.out.println("4. 회원정보 수정");
+            System.out.println("5. 로그아웃");
+            System.out.print("선택 > ");
+            String choice = scanner.nextLine();
+            switch (choice) {
+                case "1":
+                    filterAndShowPrograms();
+                    break;
+                case "2":
+                    reservationManager.makeReservation(loggedInUser.getId(), programManager);
+                    break;
+                case "3":
+                    reservationManager.showMyReservations(loggedInUser.getId(), programManager, userManager);
+                    break;
+                case "4":
+                    userManager.updateUserInfo(loggedInUser);
+                    break;
+                case "5":
+                    loggedInUser = null;
                     return;
                 default:
                     System.out.println("잘못된 입력입니다.");
