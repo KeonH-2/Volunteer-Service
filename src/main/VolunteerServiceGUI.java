@@ -32,9 +32,9 @@ public class VolunteerServiceGUI extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         // 각 패널 초기화
-        initLoginPanel();
-        initAdminPanel();
-        initUserPanel();
+        mainPanel.add(new LoginPanel(this), "LOGIN");
+        mainPanel.add(new AdminPanel(this), "ADMIN");
+        mainPanel.add(new UserPanel(this), "USER");
 
         // 메인 패널 추가
         add(mainPanel);
@@ -490,6 +490,38 @@ public class VolunteerServiceGUI extends JFrame {
         
         dialog.add(panel);
         dialog.setVisible(true);
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public VolunteerProgramManager getProgramManager() {
+        return programManager;
+    }
+
+    public ReservationManager getReservationManager() {
+        return reservationManager;
+    }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+    }
+
+    public void showLoginPanel() {
+        cardLayout.show(mainPanel, "LOGIN");
+    }
+
+    public void showAdminPanel() {
+        cardLayout.show(mainPanel, "ADMIN");
+    }
+
+    public void showUserPanel() {
+        cardLayout.show(mainPanel, "USER");
     }
 
     public static void main(String[] args) {
