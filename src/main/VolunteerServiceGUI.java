@@ -266,7 +266,7 @@ public class VolunteerServiceGUI extends JFrame {
         dialog.setVisible(true);
     }
 
-    private void showProgramRegisterDialog() {
+    public void showProgramRegisterDialog() {
         // 프로그램 등록 다이얼로그 구현
         JDialog dialog = new JDialog(this, "봉사 프로그램 등록", true);
         dialog.setSize(400, 500);
@@ -346,7 +346,7 @@ public class VolunteerServiceGUI extends JFrame {
         dialog.setVisible(true);
     }
 
-    private void showProgramListDialog() {
+    public void showProgramListDialog() {
         // 프로그램 조회/필터 다이얼로그 구현
         JDialog dialog = new JDialog(this, "봉사 프로그램 조회/필터", true);
         dialog.setSize(600, 400);
@@ -401,43 +401,43 @@ public class VolunteerServiceGUI extends JFrame {
         dialog.setVisible(true);
     }
 
-    private void showReservationDialog() {
+    public void showReservationDialog() {
         // 예약 신청 다이얼로그 구현
-        showProgramListDialog(); // 먼저 프로그램 목록을 보여주고
+        showProgramListDialog(); // 기존처럼 프로그램 목록을 보여주고
         // 선택한 프로그램에 대한 예약 처리
     }
 
-    private void showMyPageDialog() {
-    JDialog dialog = new JDialog(this, "마이페이지", true);
-    dialog.setSize(500, 400);
-    dialog.setLocationRelativeTo(this);
+    public void showMyPageDialog() {
+        JDialog dialog = new JDialog(this, "마이페이지", true);
+        dialog.setSize(500, 400);
+        dialog.setLocationRelativeTo(this);
 
-    JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new BorderLayout());
 
-    JTextArea reservationArea = new JTextArea();
-    reservationArea.setEditable(false);
-    JScrollPane scrollPane = new JScrollPane(reservationArea);
+        JTextArea reservationArea = new JTextArea();
+        reservationArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(reservationArea);
 
-    // 예약 내역 출력
-    StringBuilder sb = new StringBuilder();
-    List<Reservation> myReservations = reservationManager.getMyReservations(loggedInUser.getId());
-    if (myReservations.isEmpty()) {
-        sb.append("예약된 봉사 프로그램이 없습니다.");
-    } else {
-        for (Reservation r : myReservations) {
-            sb.append("- 프로그램명: ").append(r.getProgramName())
-              .append(" | 승인여부: ").append(r.isConfirmed() ? "승인됨" : "대기중").append("\n");
+        // 예약 내역 출력
+        StringBuilder sb = new StringBuilder();
+        List<Reservation> myReservations = reservationManager.getMyReservations(loggedInUser.getId());
+        if (myReservations.isEmpty()) {
+            sb.append("예약된 봉사 프로그램이 없습니다.");
+        } else {
+            for (Reservation r : myReservations) {
+                sb.append("- 프로그램명: ").append(r.getProgramName())
+                  .append(" | 승인여부: ").append(r.isConfirmed() ? "승인됨" : "대기중").append("\n");
+            }
         }
+        reservationArea.setText(sb.toString());
+
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
     }
-    reservationArea.setText(sb.toString());
 
-    panel.add(scrollPane, BorderLayout.CENTER);
-
-    dialog.add(panel);
-    dialog.setVisible(true);
-}
-
-    private void showUpdateInfoDialog() {
+    public void showUpdateInfoDialog() {
         // 회원정보 수정 다이얼로그 구현
         JDialog dialog = new JDialog(this, "회원정보 수정", true);
         dialog.setSize(300, 300);

@@ -32,8 +32,8 @@ public class AdminPanel extends BasePanel {
 
         add(buttonPanel, BorderLayout.NORTH);
 
-        programRegisterButton.addActionListener(e -> showProgramRegisterDialog());
-        programListButton.addActionListener(e -> showProgramListDialog());
+        programRegisterButton.addActionListener(e -> mainFrame.showProgramRegisterDialog());
+        programListButton.addActionListener(e -> mainFrame.showProgramListDialog());
         logoutButton.addActionListener(e -> logout());
     }
 

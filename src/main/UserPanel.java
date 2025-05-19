@@ -42,10 +42,10 @@ public class UserPanel extends BasePanel {
 
         add(buttonPanel, BorderLayout.NORTH);
 
-        programListButton.addActionListener(e -> showProgramListDialog());
-        reservationButton.addActionListener(e -> showReservationDialog());
-        myPageButton.addActionListener(e -> showMyPageDialog());
-        updateInfoButton.addActionListener(e -> showUpdateInfoDialog());
+        programListButton.addActionListener(e -> mainFrame.showProgramListDialog());
+        reservationButton.addActionListener(e -> mainFrame.showReservationDialog());
+        myPageButton.addActionListener(e -> mainFrame.showMyPageDialog());
+        updateInfoButton.addActionListener(e -> mainFrame.showUpdateInfoDialog());
         logoutButton.addActionListener(e -> logout());
     }
 
