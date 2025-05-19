@@ -30,7 +30,6 @@ public class User {
     public int getTotalVolunteerHours() { return totalVolunteerHours; }
     public void addVolunteerHours(int hours) { this.totalVolunteerHours += hours; }
     public void setTotalVolunteerHours(int hours) { this.totalVolunteerHours = hours; }
-    
     public List<String> getNotifications() { return notifications; }
     public void addNotification(String msg) { notifications.add(msg); }
     public void clearNotifications() { notifications.clear(); }

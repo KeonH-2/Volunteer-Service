@@ -81,9 +81,10 @@ public class VolunteerService {
             System.out.println("\n==== 봉사자 메뉴 ====");
             System.out.println("1. 봉사 프로그램 조회/필터");
             System.out.println("2. 예약 신청");
-            System.out.println("3. 마이페이지(내 예약/취소)");
-            System.out.println("4. 회원정보 수정");
-            System.out.println("5. 로그아웃");
+            System.out.println("3. 누적 봉사시간 확인");
+            System.out.println("4. 마이페이지(내 예약/취소)");
+            System.out.println("5. 회원정보 수정");
+            System.out.println("6. 로그아웃");
             System.out.print("선택 > ");
             String choice = scanner.nextLine();
             switch (choice) {
@@ -99,7 +100,7 @@ public class VolunteerService {
                 case "4":
                     // userManager.updateUserInfo(loggedInUser);
                     break;
-                case "5":
+                case "6":
                     loggedInUser = null;
                     return;
                 default:
