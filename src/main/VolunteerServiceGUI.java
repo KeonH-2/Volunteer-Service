@@ -203,7 +203,7 @@ public class VolunteerServiceGUI extends JFrame {
         mainPanel.add(userPanel, "USER");
     }
 
-    private void showRegisterDialog() {
+    public void showRegisterDialog() {
         // 회원가입 다이얼로그 구현
         JDialog dialog = new JDialog(this, "회원가입", true);
         dialog.setSize(500, 400);

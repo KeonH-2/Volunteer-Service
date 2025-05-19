@@ -84,8 +84,6 @@ public class LoginPanel extends BasePanel {
     }
 
     private void showRegisterDialog() {
-        // 회원가입 다이얼로그 표시 로직
-        JDialog dialog = new JDialog(mainFrame, "회원가입", true);
-        // ... 기존 회원가입 다이얼로그 코드 ...
+        mainFrame.showRegisterDialog();
     }
 } 
