@@ -48,29 +48,51 @@ public class VolunteerServiceGUI extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
+        // 제목 레이블 추가
+        JLabel titleLabel = new JLabel("봉사 예약 신청 서비스");
+        titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
+        titleLabel.setForeground(new Color(51, 51, 51));
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 5, 30, 5);
+        loginPanel.add(titleLabel, gbc);
+
         JTextField idField = new JTextField(20);
         JPasswordField pwField = new JPasswordField(20);
         JButton loginButton = new JButton("로그인");
         JButton registerButton = new JButton("회원가입");
 
+        // 버튼 스타일 설정
+        loginButton.setBackground(new Color(240, 240, 240));
+        loginButton.setForeground(Color.BLACK);
+        loginButton.setFocusPainted(false);
+        registerButton.setBackground(new Color(240, 240, 240));
+        registerButton.setForeground(Color.BLACK);
+        registerButton.setFocusPainted(false);
+
+        gbc.insets = new Insets(5, 5, 5, 5);
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
         loginPanel.add(new JLabel("아이디:"), gbc);
         gbc.gridx = 1;
         loginPanel.add(idField, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         loginPanel.add(new JLabel("비밀번호:"), gbc);
         gbc.gridx = 1;
         loginPanel.add(pwField, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 5, 5, 5);
         loginPanel.add(loginButton, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         loginPanel.add(registerButton, gbc);
 
         loginButton.addActionListener(e -> {
@@ -121,6 +143,9 @@ public class VolunteerServiceGUI extends JFrame {
             showProgramListDialog();
         });
 
+        logoutButton.setBackground(new Color(240, 240, 240));
+        logoutButton.setForeground(Color.BLACK);
+        logoutButton.setFocusPainted(false);
         logoutButton.addActionListener(e -> {
             loggedInUser = null;
             cardLayout.show(mainPanel, "LOGIN");
@@ -167,6 +192,9 @@ public class VolunteerServiceGUI extends JFrame {
             showUpdateInfoDialog();
         });
 
+        logoutButton.setBackground(new Color(240, 240, 240));
+        logoutButton.setForeground(Color.BLACK);
+        logoutButton.setFocusPainted(false);
         logoutButton.addActionListener(e -> {
             loggedInUser = null;
             cardLayout.show(mainPanel, "LOGIN");
