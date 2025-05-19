@@ -1,97 +1,68 @@
-package main;
+// package main; // 삭제
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.util.*;
 
 public class VolunteerProgramManager {
-    private List<VolunteerProgram> programs = new ArrayList<>();
-    private final String FILE_NAME = "programs.json";
-    private Scanner scanner = new Scanner(System.in);
+    private List<VolunteerProgram> programs;
+    private static final String PROGRAM_FILE = "programs.txt";
+
+    public VolunteerProgramManager() {
+        programs = new ArrayList<>();
+    }
 
     public void loadPrograms() {
-        programs.clear();
-        try (FileReader reader = new FileReader(FILE_NAME)) {
-            JSONArray arr = (JSONArray) new JSONParser().parse(reader);
-            for (Object o : arr) {
-                JSONObject obj = (JSONObject) o;
-                String name = (String) obj.get("name");
-                String date = (String) obj.get("date");
-                String location = (String) obj.get("location");
-                String category = (String) obj.get("category");
-                int max = ((Long) obj.get("maxParticipants")).intValue();
-                int hours = ((Long) obj.get("hours")).intValue();
-                programs.add(new VolunteerProgram(name, date, location, category, max, hours));
+        try (BufferedReader reader = new BufferedReader(new FileReader(PROGRAM_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 6) {
+                    String name = parts[0];
+                    String date = parts[1];
+                    String location = parts[2];
+                    String category = parts[3];
+                    int maxParticipants = Integer.parseInt(parts[4]);
+                    int hours = Integer.parseInt(parts[5]);
+                    programs.add(new VolunteerProgram(name, date, location, category, maxParticipants, hours));
+                }
             }
-        } catch (Exception e) { /* 파일 없을 때 등 무시 */ }
+        } catch (IOException e) {
+            System.out.println("프로그램 데이터 로드 실패: " + e.getMessage());
+        }
     }
 
     public void savePrograms() {
-        JSONArray arr = new JSONArray();
-        for (VolunteerProgram p : programs) {
-            JSONObject obj = new JSONObject();
-            obj.put("name", p.getName());
-            obj.put("date", p.getDate());
-            obj.put("location", p.getLocation());
-            obj.put("category", p.getCategory());
-            obj.put("maxParticipants", p.getMaxParticipants());
-            obj.put("hours", p.getHours());
-            arr.add(obj);
-        }
-        try (FileWriter file = new FileWriter(FILE_NAME)) {
-            file.write(arr.toJSONString());
-        } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    public void uploadProgram() {
-        System.out.println("[새 봉사 프로그램 업로드]");
-        System.out.print("봉사 이름: ");
-        String name = scanner.nextLine();
-        System.out.print("봉사 날짜 (예: 2025-06-15): ");
-        String date = scanner.nextLine();
-        System.out.print("장소(예: 서울 강남구): ");
-        String location = scanner.nextLine();
-        System.out.print("카테고리(예: 환경/교육/복지): ");
-        String category = scanner.nextLine();
-        System.out.print("최대 신청 인원: ");
-        int max = Integer.parseInt(scanner.nextLine());
-        System.out.print("봉사 시간(시간): ");
-        int hours = Integer.parseInt(scanner.nextLine());
-
-        for (VolunteerProgram p : programs) {
-            if (p.getName().equals(name)) {
-                System.out.println("이미 존재하는 봉사 프로그램입니다.");
-                return;
+        try (PrintWriter writer = new PrintWriter(new FileWriter(PROGRAM_FILE))) {
+            for (VolunteerProgram program : programs) {
+                writer.println(String.format("%s,%s,%s,%s,%d,%d",
+                    program.getName(), program.getDate(), program.getLocation(),
+                    program.getCategory(), program.getMaxParticipants(), program.getHours()));
             }
+        } catch (IOException e) {
+            System.out.println("프로그램 데이터 저장 실패: " + e.getMessage());
         }
-        programs.add(new VolunteerProgram(name, date, location, category, max, hours));
-        savePrograms();
-        System.out.println("[" + name + "] 봉사 프로그램이 업로드되었습니다.");
     }
 
-    // 필터 기능
+    public void uploadProgram(String name, String date, String location, String category, int maxParticipants, int hours) {
+        programs.add(new VolunteerProgram(name, date, location, category, maxParticipants, hours));
+        savePrograms();
+    }
+
     public List<VolunteerProgram> filterPrograms(String location, String date, String category) {
         List<VolunteerProgram> filtered = new ArrayList<>();
+        for (VolunteerProgram program : programs) {
+            boolean matchLocation = location.isEmpty() || program.getLocation().contains(location);
+            boolean matchDate = date.isEmpty() || program.getDate().equals(date);
+            boolean matchCategory = category.isEmpty() || program.getCategory().equals(category);
             
-        for(VolunteerProgram check : programs){
-        	boolean match = true;
-    		if (!location.isEmpty() && !check.getLocation().equals(location)) { match = false; }
-    		if (!date.isEmpty() && !check.getDate().equals(date)) { match = false; }
-    		if (!category.isEmpty() && !check.getCategory().equals(category)) { match = false; }   
-    		if(match){ filtered.add(check); } 
-    		else continue;
+            if (matchLocation && matchDate && matchCategory) {
+                filtered.add(program);
+            }
         }
-            
         return filtered;
     }
-	
 
-    public VolunteerProgram getProgramByName(String name) {
-        for (VolunteerProgram p : programs) if (p.getName().equals(name)) return p;
-        return null;
+    public List<VolunteerProgram> getPrograms() {
+        return programs;
     }
-
-    public List<VolunteerProgram> getPrograms() { return programs; }
 }

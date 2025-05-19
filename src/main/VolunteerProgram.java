@@ -1,4 +1,4 @@
-package main;
+// package main; // 삭제
 
 public class VolunteerProgram {
     private String name;

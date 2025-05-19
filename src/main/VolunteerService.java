@@ -1,4 +1,4 @@
-package main;
+// package main; // 삭제
 
 import java.util.*;
 
@@ -26,10 +26,10 @@ public class VolunteerService {
 
             switch (choice) {
                 case "1":
-                    userManager.registerUser();
+                    // userManager.registerUser();
                     break;
                 case "2":
-                    loggedInUser = userManager.login();
+                    // loggedInUser = userManager.login();
                     if (loggedInUser != null) {
                         if (loggedInUser.isAdmin()) {
                             adminLoop();
@@ -61,7 +61,7 @@ public class VolunteerService {
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    programManager.uploadProgram();
+                    // programManager.uploadProgram();
                     break;
                 case "2":
                     filterAndShowPrograms();
@@ -91,13 +91,13 @@ public class VolunteerService {
                     filterAndShowPrograms();
                     break;
                 case "2":
-                    reservationManager.makeReservation(loggedInUser.getId(), programManager);
+                    // reservationManager.makeReservation(loggedInUser.getId(), programManager);
                     break;
                 case "3":
-                    reservationManager.showMyReservations(loggedInUser.getId(), programManager, userManager);
+                    // reservationManager.showMyReservations(loggedInUser.getId(), programManager, userManager);
                     break;
                 case "4":
-                    userManager.updateUserInfo(loggedInUser);
+                    // userManager.updateUserInfo(loggedInUser);
                     break;
                 case "5":
                     loggedInUser = null;
