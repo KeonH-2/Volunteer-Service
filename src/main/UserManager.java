@@ -21,9 +21,14 @@ public class UserManager {
                 String phonenumber = (String) obj.get("phonenumber");
                 String id = (String) obj.get("id");
                 String password = (String) obj.get("password");
-                boolean isAdmin = obj.get("isAdmin") != null && (Boolean) obj.get("isAdmin");
                 int hours = obj.get("totalVolunteerHours") == null ? 0 : ((Long) obj.get("totalVolunteerHours")).intValue();
-                User user = new User(name, phonenumber, id, password, isAdmin);
+                String type = (String) obj.get("type");
+                User user;
+                if ("admin".equals(type)) {
+                    user = new Admin(name, phonenumber, id, password);
+                } else {
+                    user = new Volunteer(name, phonenumber, id, password);
+                }
                 user.setTotalVolunteerHours(hours);
                 // 알림 복원
                 JSONArray notiArr = (JSONArray) obj.get("notifications");
@@ -45,8 +50,8 @@ public class UserManager {
             obj.put("phonenumber", user.getPhonenumber());
             obj.put("id", user.getId());
             obj.put("password", user.getPassword());
-            obj.put("isAdmin", user.isAdmin());
             obj.put("totalVolunteerHours", user.getTotalVolunteerHours());
+            obj.put("type", user.isAdmin() ? "admin" : "volunteer");
             JSONArray notiArr = new JSONArray();
             for (String msg : user.getNotifications()) notiArr.add(msg);
             obj.put("notifications", notiArr);
@@ -82,7 +87,12 @@ public class UserManager {
                 return;
             }
         }
-        User newUser = new User(name, phoneNumber, id, password, isAdmin);
+        User newUser;
+        if (isAdmin) {
+            newUser = new Admin(name, phoneNumber, id, password);
+        } else {
+            newUser = new Volunteer(name, phoneNumber, id, password);
+        }
         users.add(newUser);
         saveUsers();
         System.out.println((isAdmin ? "관리자" : "봉사자") + " 회원가입이 완료되었습니다.");
@@ -163,7 +173,6 @@ public class UserManager {
             saveUsers();
         }
     }
-
 
     public List<User> getUsers() { return users; }
     public User getUserById(String id) {

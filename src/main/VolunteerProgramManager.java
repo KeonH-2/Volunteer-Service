@@ -74,24 +74,18 @@ public class VolunteerProgramManager {
     // 필터 기능
     public List<VolunteerProgram> filterPrograms(String location, String date, String category) {
         List<VolunteerProgram> filtered = new ArrayList<>();
-            
         for(VolunteerProgram check : programs){
-        	boolean match = true;
-    		if (!location.isEmpty() && !check.getLocation().equals(location)) { match = false; }
-    		if (!date.isEmpty() && !check.getDate().equals(date)) { match = false; }
-    		if (!category.isEmpty() && !check.getCategory().equals(category)) { match = false; }   
-    		if(match){ filtered.add(check); } 
-    		else continue;
+            boolean match = true;
+            if (!location.isEmpty() && !check.getLocation().equals(location)) { match = false; }
+            if (!date.isEmpty() && !check.getDate().equals(date)) { match = false; }
+            if (!category.isEmpty() && !check.getCategory().equals(category)) { match = false; }   
+            if(match){ filtered.add(check); } 
         }
-            
         return filtered;
     }
-	
-
     public VolunteerProgram getProgramByName(String name) {
         for (VolunteerProgram p : programs) if (p.getName().equals(name)) return p;
         return null;
     }
-
     public List<VolunteerProgram> getPrograms() { return programs; }
 }

@@ -138,7 +138,7 @@ public class ReservationManager {
             VolunteerProgram p = vpm.getProgramByName(myPrograms.get(i));
             System.out.printf("%d. %s (%s, %s, %s)\n", i + 1, p.getName(), p.getDate(), p.getLocation(), p.getCategory());
         }
-        System.out.println("봉사 예약을 취소하시겠습니까?(Y/N) >> ");
+        System.out.print("봉사 예약을 취소하시겠습니까?(Y/N) >> ");
         String choice = scanner.nextLine();
         if (choice.equalsIgnoreCase("Y")) {
             cancelReservation(userId, vpm, myPrograms, userManager);
@@ -149,7 +149,7 @@ public class ReservationManager {
 
     // 예약 취소
     public void cancelReservation(String userId, VolunteerProgramManager vpm, List<String> myPrograms, UserManager userManager) {
-        System.out.println("예약을 취소하고 싶은 봉사의 번호를 입력해주세요 >> ");
+        System.out.print("예약을 취소하고 싶은 봉사의 번호를 입력해주세요 >> ");
         int reservnum;
         try {
             reservnum = Integer.parseInt(scanner.nextLine()) - 1;
