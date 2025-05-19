@@ -349,41 +349,62 @@ public class VolunteerServiceGUI extends JFrame {
     public void showProgramListDialog() {
         // 프로그램 조회/필터 다이얼로그 구현
         JDialog dialog = new JDialog(this, "봉사 프로그램 조회/필터", true);
-        dialog.setSize(600, 400);
+        dialog.setSize(700, 450);
         dialog.setLocationRelativeTo(this);
-        
-        JPanel panel = new JPanel(new BorderLayout());
-        
-        JPanel filterPanel = new JPanel(new GridLayout(3, 2, 5, 5));
-        JTextField locationField = new JTextField(20);
-        JTextField dateField = new JTextField(20);
-        JTextField categoryField = new JTextField(20);
-        
-        filterPanel.add(new JLabel("장소(구 단위):"));
-        filterPanel.add(locationField);
-        filterPanel.add(new JLabel("날짜(yyyy-MM-dd):"));
-        filterPanel.add(dateField);
-        filterPanel.add(new JLabel("카테고리:"));
-        filterPanel.add(categoryField);
-        
+
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // 필터 입력란을 한 줄에 배치
+        JPanel filterPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0, 8, 0, 8);
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel locationLabel = new JLabel("장소(구 단위):");
+        JTextField locationField = new JTextField(10);
+        JLabel dateLabel = new JLabel("날짜(yyyy-MM-dd):");
+        JTextField dateField = new JTextField(10);
+        JLabel categoryLabel = new JLabel("카테고리:");
+        JTextField categoryField = new JTextField(10);
         JButton searchButton = new JButton("검색");
-        filterPanel.add(searchButton);
-        
+        searchButton.setBackground(new Color(240, 240, 240));
+        searchButton.setForeground(Color.BLACK);
+        searchButton.setFocusPainted(false);
+
+        gbc.gridx = 0;
+        filterPanel.add(locationLabel, gbc);
+        gbc.gridx = 1;
+        filterPanel.add(locationField, gbc);
+        gbc.gridx = 2;
+        filterPanel.add(dateLabel, gbc);
+        gbc.gridx = 3;
+        filterPanel.add(dateField, gbc);
+        gbc.gridx = 4;
+        filterPanel.add(categoryLabel, gbc);
+        gbc.gridx = 5;
+        filterPanel.add(categoryField, gbc);
+        gbc.gridx = 6;
+        filterPanel.add(searchButton, gbc);
+
+        // 결과 영역
         JTextArea resultArea = new JTextArea();
         resultArea.setEditable(false);
+        resultArea.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
         JScrollPane scrollPane = new JScrollPane(resultArea);
-        
+
         panel.add(filterPanel, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
-        
+
         searchButton.addActionListener(e -> {
             String location = locationField.getText();
             String date = dateField.getText();
             String category = categoryField.getText();
-            
+
             List<VolunteerProgram> filtered = programManager.filterPrograms(location, date, category);
             StringBuilder sb = new StringBuilder();
-            
+
             if (filtered.isEmpty()) {
                 sb.append("조건에 맞는 봉사 프로그램이 없습니다.");
             } else {
@@ -393,10 +414,10 @@ public class VolunteerServiceGUI extends JFrame {
                             p.getMaxParticipants(), p.getHours()));
                 }
             }
-            
+
             resultArea.setText(sb.toString());
         });
-        
+
         dialog.add(panel);
         dialog.setVisible(true);
     }
