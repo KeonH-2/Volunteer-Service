@@ -9,60 +9,9 @@ import java.util.*;
 public class UserManager {
     private List<User> users = new ArrayList<>();
     private final String USER_FILE = "users.json";
-    private Scanner scanner = new Scanner(System.in);
-
-    public void loadUsers() {
-        users.clear();
-        try (FileReader reader = new FileReader(USER_FILE)) {
-            JSONArray userArray = (JSONArray) new JSONParser().parse(reader);
-            for (Object o : userArray) {
-                JSONObject obj = (JSONObject) o;
-                String name = (String) obj.get("name");
-                String phonenumber = (String) obj.get("phonenumber");
-                String id = (String) obj.get("id");
-                String password = (String) obj.get("password");
-                int hours = obj.get("totalVolunteerHours") == null ? 0 : ((Long) obj.get("totalVolunteerHours")).intValue();
-                String type = (String) obj.get("type");
-                User user;
-                if ("admin".equals(type)) {
-                    user = new Admin(name, phonenumber, id, password);
-                } else {
-                    user = new Volunteer(name, phonenumber, id, password);
-                }
-                user.setTotalVolunteerHours(hours);
-                // 알림 복원
-                JSONArray notiArr = (JSONArray) obj.get("notifications");
-                if (notiArr != null) {
-                    for (Object msg : notiArr) {
-                        user.addNotification((String) msg);
-                    }
-                }
-                users.add(user);
-            }
-        } catch (Exception e) { /* 파일 없을 때 등 무시 */ }
-    }
-
-    public void saveUsers() {
-        JSONArray userArray = new JSONArray();
-        for (User user : users) {
-            JSONObject obj = new JSONObject();
-            obj.put("name", user.getName());
-            obj.put("phonenumber", user.getPhonenumber());
-            obj.put("id", user.getId());
-            obj.put("password", user.getPassword());
-            obj.put("totalVolunteerHours", user.getTotalVolunteerHours());
-            obj.put("type", user.isAdmin() ? "admin" : "volunteer");
-            JSONArray notiArr = new JSONArray();
-            for (String msg : user.getNotifications()) notiArr.add(msg);
-            obj.put("notifications", notiArr);
-            userArray.add(obj);
-        }
-        try (FileWriter file = new FileWriter(USER_FILE)) {
-            file.write(userArray.toJSONString());
-        } catch (Exception e) { e.printStackTrace(); }
-    }
-
+    
     public void registerUser() {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("\n[회원가입]");
         System.out.print("1. 봉사자 가입\n2. 관리자 가입\n선택 > ");
         String type = scanner.nextLine();
@@ -77,6 +26,7 @@ public class UserManager {
         System.out.print("비밀번호: ");
         String password = scanner.nextLine();
 
+        // 중복 체크
         for (User user : users) {
             if (user.getPhonenumber().equals(phoneNumber)) {
                 System.out.println("이미 존재하는 전화번호입니다.");
@@ -97,8 +47,9 @@ public class UserManager {
         saveUsers();
         System.out.println((isAdmin ? "관리자" : "봉사자") + " 회원가입이 완료되었습니다.");
     }
-
+    
     public User login() {
+        Scanner scanner = new Scanner(System.in);
         System.out.print("아이디를 입력하세요: ");
         String inputId = scanner.nextLine();
         System.out.print("비밀번호를 입력하세요: ");
@@ -121,7 +72,37 @@ public class UserManager {
         System.out.println("아이디 또는 비밀번호가 틀렸습니다.");
         return null;
     }
+
     
+    public void loadUsers() {
+        users.clear();
+        try (FileReader reader = new FileReader(USER_FILE)) {
+            JSONArray userArray = (JSONArray) new JSONParser().parse(reader);
+            for (Object o : userArray) {
+                JSONObject obj = (JSONObject) o;
+                String name = (String) obj.get("name");
+                String phonenumber = (String) obj.get("phonenumber");
+                String id = (String) obj.get("id");
+                String password = (String) obj.get("password");
+                int hours = obj.get("totalVolunteerHours") == null ? 0 : ((Long) obj.get("totalVolunteerHours")).intValue();
+                String type = (String) obj.get("type");
+                User user;
+                if ("admin".equals(type)) {
+                    user = new Admin(name, phonenumber, id, password);
+                } else {
+                    user = new Volunteer(name, phonenumber, id, password);
+                }
+                user.setTotalVolunteerHours(hours);
+                JSONArray notiArr = (JSONArray) obj.get("notifications");
+                if (notiArr != null) {
+                    for (Object msg : notiArr) {
+                        user.addNotification((String) msg);
+                    }
+                }
+                users.add(user);
+            }
+        } catch (Exception e) { /* 파일 없을 때 등 무시 */ }
+    }
     public void updateUserInfo(User user) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -172,6 +153,27 @@ public class UserManager {
             }
             saveUsers();
         }
+    }
+
+
+    public void saveUsers() {
+        JSONArray userArray = new JSONArray();
+        for (User user : users) {
+            JSONObject obj = new JSONObject();
+            obj.put("name", user.getName());
+            obj.put("phonenumber", user.getPhonenumber());
+            obj.put("id", user.getId());
+            obj.put("password", user.getPassword());
+            obj.put("totalVolunteerHours", user.getTotalVolunteerHours());
+            obj.put("type", user.isAdmin() ? "admin" : "volunteer");
+            JSONArray notiArr = new JSONArray();
+            for (String msg : user.getNotifications()) notiArr.add(msg);
+            obj.put("notifications", notiArr);
+            userArray.add(obj);
+        }
+        try (FileWriter file = new FileWriter(USER_FILE)) {
+            file.write(userArray.toJSONString());
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public List<User> getUsers() { return users; }

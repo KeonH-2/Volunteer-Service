@@ -19,7 +19,6 @@ public class User {
         this.totalVolunteerHours = 0;
     }
 
-    // Getter/Setter
     public String getName() { return name; }
     public String getPhonenumber() { return phonenumber; }
     public String getId() { return id; }
@@ -34,6 +33,5 @@ public class User {
     public void setPhonenumber(String phonenumber) { this.phonenumber = phonenumber; }
     public void setPassword(String password) { this.password = password; }
 
-    // 관리자 여부 (상속에서 오버라이드)
     public boolean isAdmin() { return false; }
 }

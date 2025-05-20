@@ -3,10 +3,10 @@ package main;
 public class VolunteerProgram {
     private String name;
     private String date; // yyyy-MM-dd
-    private String location; // 예: "서울 강남구"
-    private String category; // 예: "환경", "교육", "복지"
+    private String location;
+    private String category;
     private int maxParticipants;
-    private int hours; // 봉사 시간
+    private int hours;
 
     public VolunteerProgram(String name, String date, String location, String category, int maxParticipants, int hours) {
         this.name = name;
