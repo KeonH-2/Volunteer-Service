@@ -5,8 +5,8 @@ import java.awt.*;
 
 // 모든 패널이 상속받을 공통 패널
 public abstract class BasePanel extends JPanel {
-    protected MainFrame mainFrame;
-
+	protected VolunteerServiceGUI mainFrame;
+	
     public BasePanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
         setOpaque(true);
@@ -39,4 +39,6 @@ public abstract class BasePanel extends JPanel {
 
     // 공통 폼 초기화(필요시 오버라이드)
     public void resetForm() {}
+    
+    protected abstract void initializePanel();
 }

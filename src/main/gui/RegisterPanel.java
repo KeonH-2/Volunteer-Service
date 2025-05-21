@@ -22,7 +22,7 @@ public class RegisterPanel extends BasePanel {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
-
+        
         gbc.gridx = 0; gbc.gridy = 0;
         add(new JLabel("이름:"), gbc);
         gbc.gridx = 1;
