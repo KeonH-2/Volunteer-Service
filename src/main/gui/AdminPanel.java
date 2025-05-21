@@ -4,9 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public class AdminPanel extends BasePanel {
-    public AdminPanel(MainFrame mainFrame) {
+    public AdminPanel(main.VolunteerServiceGUI mainFrame) {
         super(mainFrame);
     }
+
     @Override
     protected void initializePanel() {
         setLayout(new BorderLayout());
@@ -33,8 +34,6 @@ public class AdminPanel extends BasePanel {
 
         add(buttonPanel, BorderLayout.NORTH);
 
-        programRegisterButton.addActionListener(e -> mainFrame.showProgramRegisterDialog());
-        programListButton.addActionListener(e -> mainFrame.showProgramListDialog());
         logoutButton.addActionListener(e -> logout());
     }
 
@@ -49,4 +48,4 @@ public class AdminPanel extends BasePanel {
         JDialog dialog = new JDialog(mainFrame, "봉사 프로그램 조회/필터", true);
         // ... 기존 프로그램 조회/필터 다이얼로그 코드 ...
     }
-}
+} 

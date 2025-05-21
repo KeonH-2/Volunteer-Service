@@ -2,43 +2,47 @@ package main.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import main.UserManager;
 import main.User;
 
 public class LoginPanel extends BasePanel {
-    private JTextField idField = new JTextField(15);
-    private JPasswordField pwField = new JPasswordField(15);
-    private JButton loginBtn = new JButton("로그인");
-    private JButton registerBtn = new JButton("회원가입");
+    private JTextField idField;
+    private JPasswordField pwField;
 
-    private UserManager userManager;
-
-    public LoginPanel(MainFrame mainFrame, UserManager userManager) {
+    public LoginPanel(main.VolunteerServiceGUI mainFrame) {
         super(mainFrame);
-        this.userManager = userManager;
+    }
 
+    @Override
+    protected void initializePanel() {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
 
-        gbc.gridx = 0; gbc.gridy = 0;
-        add(new JLabel("아이디:"), gbc);
+        JLabel idLabel = new JLabel("아이디:");
+        JLabel pwLabel = new JLabel("비밀번호:");
+        idField = new JTextField(10);
+        pwField = new JPasswordField(10);
+        JButton loginBtn = new JButton("로그인");
+        JButton registerBtn = new JButton("회원가입"); // 회원가입 버튼 추가
+
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 1;
+        add(idLabel, gbc);
         gbc.gridx = 1;
         add(idField, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1;
-        add(new JLabel("비밀번호:"), gbc);
+        add(pwLabel, gbc);
         gbc.gridx = 1;
         add(pwField, gbc);
 
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
         add(loginBtn, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridy = 3; // 한 줄 아래에 회원가입 버튼 배치
         add(registerBtn, gbc);
 
         loginBtn.addActionListener(e -> doLogin());
-        registerBtn.addActionListener(e -> goTo("register"));
+        registerBtn.addActionListener(e -> mainFrame.showRegisterPanel());
     }
 
     private void doLogin() {
@@ -46,16 +50,15 @@ public class LoginPanel extends BasePanel {
         String pw = new String(pwField.getPassword());
         User user = userManager.getUserById(id);
         if (user != null && user.getPassword().equals(pw)) {
+            mainFrame.setLoggedInUser(user);
             showMessage("로그인 성공!");
-            goTo("mainMenu");
+            if (user.isAdmin()) {
+                mainFrame.showAdminPanel();
+            } else {
+                mainFrame.showUserPanel();
+            }
         } else {
             showMessage("아이디 또는 비밀번호가 틀렸습니다.");
         }
-    }
-
-    @Override
-    public void onShow() {
-        idField.setText("");
-        pwField.setText("");
     }
 }

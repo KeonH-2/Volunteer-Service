@@ -61,5 +61,23 @@
     "id": "bbb",
     "type": "volunteer",
     "notifications": []
+  },
+  {
+    "password": "qqq",
+    "totalVolunteerHours": 0,
+    "name": "김건희",
+    "phonenumber": "0109999999",
+    "id": "qqq",
+    "type": "volunteer",
+    "notifications": []
+  },
+  {
+    "password": "abc",
+    "totalVolunteerHours": 0,
+    "name": "김건희",
+    "phonenumber": "111",
+    "id": "abc",
+    "type": "admin",
+    "notifications": []
   }
 ]
