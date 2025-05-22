@@ -54,27 +54,49 @@ public class VolunteerServiceGUI extends JFrame {
     }
 
     // 매니저/유저 getter
-    public UserManager getUserManager() { return userManager; }
-    public VolunteerProgramManager getProgramManager() { return programManager; }
-    public ReservationManager getReservationManager() { return reservationManager; }
-    public User getLoggedInUser() { return loggedInUser; }
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public VolunteerProgramManager getProgramManager() {
+        return programManager;
+    }
+
+    public ReservationManager getReservationManager() {
+        return reservationManager;
+    }
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    // UserPanel에서 사용
+    public User getCurrentUser() {
+        return loggedInUser;
+    }
 
     // 로그인 유저 setter
-    public void setLoggedInUser(User user) { this.loggedInUser = user; }
+    public void setLoggedInUser(User user) {
+        this.loggedInUser = user;
+    }
 
     // 패널 전환 메서드들
     public void showLoginPanel() {
         cardLayout.show(cardPanel, "login");
     }
+
     public void showRegisterPanel() {
         cardLayout.show(cardPanel, "register");
     }
+
     public void showMainMenuPanel() {
         cardLayout.show(cardPanel, "mainMenu");
     }
+
     public void showAdminPanel() {
         cardLayout.show(cardPanel, "admin");
     }
+
     public void showUserPanel() {
         cardLayout.show(cardPanel, "user");
     }
