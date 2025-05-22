@@ -11,24 +11,7 @@ public class VolunteerPanel extends BasePanel {
 
     @Override
     protected void initializePanel() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(new JLabel("봉사자 전용 메뉴"));
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel titleLabel = new JLabel("봉사자 전용 메뉴");
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(titleLabel);
-
-        JButton programListButton = new JButton("봉사 프로그램 조회/필터");
-        programListButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(programListButton);
-
-        // 다른 버튼들도 필요하면 여기 추가 가능
-
-        programListButton.addActionListener(e -> showProgramListDialog());
-    }
-
-    private void showProgramListDialog() {
         JDialog dialog = new JDialog(mainFrame, "봉사 프로그램 조회/필터", true);
         dialog.setSize(400, 300);
         dialog.setLocationRelativeTo(mainFrame);
