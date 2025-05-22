@@ -11,7 +11,18 @@ public class VolunteerPanel extends BasePanel {
 
     @Override
     protected void initializePanel() {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        JButton programListButton = new JButton("봉사 프로그램 조회/필터");
+        add(programListButton);
+
+        programListButton.addActionListener(e -> {
+            // 다이얼로그 띄우는 메서드를 따로 만들어서 호출
+            showProgramFilterDialog();
+        });
+    }
+
+    private void showProgramFilterDialog() {
         JDialog dialog = new JDialog(mainFrame, "봉사 프로그램 조회/필터", true);
         dialog.setSize(400, 300);
         dialog.setLocationRelativeTo(mainFrame);
@@ -47,9 +58,7 @@ public class VolunteerPanel extends BasePanel {
             String date = dateField.getText().trim();
             String category = categoryField.getText().trim();
 
-            // 프로그램 필터링 - mainFrame에 프로그램 매니저가 있다고 가정
-            List<main.VolunteerProgram> filtered = mainFrame.getProgramManager().filterPrograms(location, date,
-                    category);
+            List<main.VolunteerProgram> filtered = mainFrame.getProgramManager().filterPrograms(location, date, category);
 
             if (filtered.isEmpty()) {
                 resultArea.setText("조건에 맞는 봉사 프로그램이 없습니다.");
@@ -66,4 +75,3 @@ public class VolunteerPanel extends BasePanel {
 
         dialog.setVisible(true);
     }
-}
