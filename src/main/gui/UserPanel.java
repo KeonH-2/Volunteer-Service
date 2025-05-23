@@ -83,6 +83,7 @@ public class UserPanel extends BasePanel {
         bottomPanel.add(closeBtn);
         dialog.add(bottomPanel, BorderLayout.SOUTH);
 
+        
         dialog.setVisible(true);
     }
 }
