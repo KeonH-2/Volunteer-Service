@@ -12,6 +12,7 @@ public class ProgramListPanel extends BasePanel {
 
     public ProgramListPanel(main.VolunteerServiceGUI mainFrame) {
         super(mainFrame);
+        initializePanel();
     }
 
     @Override
@@ -71,8 +72,10 @@ public class ProgramListPanel extends BasePanel {
         }
     }
 
+    
     @Override
     public void onShow() {
+        super.onShow();
         refreshTable(programManager.getPrograms());
     }
 
@@ -101,7 +104,11 @@ public class ProgramListPanel extends BasePanel {
         String name = (String) tableModel.getValueAt(row, 0);
         VolunteerProgram p = programManager.getProgramByName(name);
         if (p == null) return;
-        reservationManager.makeReservation(loggedInUser.getId(), programManager, name);
-        showMessage("예약 요청이 처리되었습니다.");
+        boolean result = reservationManager.makeReservation(loggedInUser.getId(), programManager, name);
+        if (result) {
+            showMessage("예약 요청이 완료되었습니다.\n정원 초과 시 대기자로 등록됩니다.");
+        } else {
+            showMessage("이미 예약 또는 대기 중이거나 신청할 수 없습니다.");
+        }
     }
 }

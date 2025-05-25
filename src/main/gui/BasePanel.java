@@ -4,11 +4,11 @@ import javax.swing.*;
 import main.*;
 
 public abstract class BasePanel extends JPanel {
-    protected main.VolunteerServiceGUI mainFrame;
-    protected main.UserManager userManager;
-    protected main.VolunteerProgramManager programManager;
-    protected main.ReservationManager reservationManager;
-    protected main.User loggedInUser;
+    protected VolunteerServiceGUI mainFrame;
+    protected UserManager userManager;
+    protected VolunteerProgramManager programManager;
+    protected ReservationManager reservationManager;
+    protected User loggedInUser;
 
     public BasePanel(VolunteerServiceGUI mainFrame) {
         this.mainFrame = mainFrame;
@@ -16,14 +16,21 @@ public abstract class BasePanel extends JPanel {
         this.programManager = mainFrame.getProgramManager();
         this.reservationManager = mainFrame.getReservationManager();
         this.loggedInUser = mainFrame.getLoggedInUser();
-        initializePanel();
+        //initializePanel();
     }
 
     protected abstract void initializePanel();
-    public void onShow() {}
+
+    public void onShow() {
+        this.loggedInUser = mainFrame.getLoggedInUser();
+    }
 
     protected void showMessage(String message) {
         JOptionPane.showMessageDialog(mainFrame, message);
+    }
+
+    protected boolean showConfirm(String message) {
+        return JOptionPane.showConfirmDialog(mainFrame, message, "확인", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
 
     protected void logout() {

@@ -2,12 +2,14 @@ package main.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.regex.Pattern;
 
 public class ProgramRegisterPanel extends BasePanel {
     private JTextField nameField, dateField, locationField, categoryField, maxField, hoursField;
 
     public ProgramRegisterPanel(main.VolunteerServiceGUI mainFrame) {
         super(mainFrame);
+        initializePanel();
     }
 
     @Override
@@ -59,6 +61,10 @@ public class ProgramRegisterPanel extends BasePanel {
             showMessage("모든 항목을 입력하세요.");
             return;
         }
+        if (!Pattern.matches("\\d{4}-\\d{2}-\\d{2}", date)) {
+            showMessage("날짜는 yyyy-MM-dd 형식으로 입력하세요.");
+            return;
+        }
         if (programManager.getProgramByName(name) != null) {
             showMessage("이미 존재하는 프로그램입니다.");
             return;
@@ -71,6 +77,7 @@ public class ProgramRegisterPanel extends BasePanel {
 
     @Override
     public void onShow() {
+        super.onShow();
         nameField.setText("");
         dateField.setText("");
         locationField.setText("");

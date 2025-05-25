@@ -7,14 +7,20 @@ import java.io.*;
 import java.util.*;
 
 public class ReservationManager {
-    // 프로그램명 → 예약자 ID 리스트
     private Map<String, List<String>> reservations = new HashMap<>();
-    // 프로그램명 → 대기자 ID 리스트
     private Map<String, List<String>> waitingList = new HashMap<>();
     private final String FILE_NAME = "reservations.json";
     private Scanner scanner = new Scanner(System.in);
+    private UserManager userManager;
+    private VolunteerProgramManager programManager;
 
-    // 파일에서 예약/대기자 정보 로드
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
+    public void setProgramManager(VolunteerProgramManager programManager) {
+        this.programManager = programManager;
+    }
+
     public void loadReservations() {
         reservations.clear();
         waitingList.clear();
@@ -45,7 +51,6 @@ public class ReservationManager {
         } catch (Exception e) { /* 파일 없을 때 등 무시 */ }
     }
 
-    // 파일로 예약/대기자 정보 저장
     public void saveReservations() {
         JSONObject root = new JSONObject();
         JSONObject resObj = new JSONObject();
@@ -69,7 +74,6 @@ public class ReservationManager {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // 내 예약 프로그램명 리스트
     public List<String> getMyReservations(String userId) {
         List<String> result = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : reservations.entrySet()) {
@@ -80,7 +84,6 @@ public class ReservationManager {
         return result;
     }
 
-    // 내 대기 프로그램명 리스트
     public List<String> getMyWaiting(String userId) {
         List<String> result = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : waitingList.entrySet()) {
@@ -91,7 +94,6 @@ public class ReservationManager {
         return result;
     }
 
-    // 예약 신청 (프로그램명으로)
     public boolean makeReservation(String userId, VolunteerProgramManager vpm, String progName) {
         VolunteerProgram prog = vpm.getProgramByName(progName);
         if (prog == null) return false;
@@ -115,52 +117,108 @@ public class ReservationManager {
         }
     }
 
-    // 예약 취소 (GUI/내부 로직용, 선택한 예약만 리스트로 넘기면 됨)
-    public void cancelReservation(String userId, VolunteerProgramManager vpm, List<String> myPrograms, UserManager userManager) {
-        if (myPrograms == null || myPrograms.isEmpty()) return;
-        String progName = myPrograms.get(0); // GUI에서는 선택한 예약 하나만 리스트로 넘김
-        List<String> resList = reservations.get(progName);
+//    // 예약 취소 (CLI)
+//    public boolean cancelReservation(String userId, VolunteerProgramManager vpm, List<String> myPrograms, UserManager userManager) {
+//        System.out.print("예약을 취소하고 싶은 봉사의 번호를 입력해주세요 >> ");
+//        int reservnum;
+//        try {
+//            reservnum = Integer.parseInt(scanner.nextLine()) - 1;
+//        } catch (NumberFormatException e) {
+//            System.out.println("번호를 입력해주세요.");
+//            return false;
+//        }
+//        if (reservnum >= 0 && reservnum < myPrograms.size()) {
+//            String programToCancel = myPrograms.get(reservnum);
+//            List<String> resList = reservations.get(programToCancel);
+//            if (resList != null && resList.remove(userId)) {
+//                // 대기자 승격
+//                List<String> waiters = waitingList.getOrDefault(programToCancel, new ArrayList<>());
+//                if (!waiters.isEmpty()) {
+//                    String nextUser = waiters.remove(0);
+//                    resList.add(nextUser);
+//                    waitingList.put(programToCancel, waiters);
+//                    // 승격된 사용자에게 알림 추가
+//                    User promotedUser = userManager.getUserById(nextUser);
+//                    VolunteerProgram p = vpm.getProgramByName(programToCancel);
+//                    if (promotedUser != null && p != null) {
+//                        promotedUser.addNotification("[" + p.getName() + "] 봉사 예약이 대기에서 확정되었습니다!");
+//                        userManager.saveUsers();
+//                    }
+//                }
+//                saveReservations();
+//                return true; // 성공
+//            } else {
+//                System.out.println("이미 취소되었거나 잘못된 요청입니다.");
+//                return false;
+//            }
+//        } else {
+//            System.out.println("유효하지 않은 번호입니다.");
+//            return false;
+//        }
+//    }
+    // 예약 취소 (GUI/내부 로직용, 단일 예약명)
+    public boolean cancelReservation(String userId, VolunteerProgramManager vpm, List<String> singleProgram, UserManager userManager) {
+        // singleProgram: 취소할 프로그램명만 1개 담긴 리스트
+        if (singleProgram == null || singleProgram.isEmpty()) {
+            System.out.println("취소할 프로그램이 없습니다.");
+            return false;
+        }
+        String programToCancel = singleProgram.get(0);
+        List<String> resList = reservations.get(programToCancel);
         if (resList != null && resList.remove(userId)) {
             // 대기자 승격
-            List<String> waitList = waitingList.get(progName);
-            if (waitList != null && !waitList.isEmpty()) {
-                String nextUserId = waitList.remove(0);
-                resList.add(nextUserId);
-
-                // 알림 전송
-                User nextUser = userManager.getUserById(nextUserId);
-                VolunteerProgram p = vpm.getProgramByName(progName);
-                if (nextUser != null && p != null) {
-                    nextUser.addNotification("[" + p.getName() + "] 예약이 확정되었습니다!");
+            List<String> waiters = waitingList.getOrDefault(programToCancel, new ArrayList<>());
+            if (!waiters.isEmpty()) {
+                String nextUser = waiters.remove(0);
+                resList.add(nextUser);
+                waitingList.put(programToCancel, waiters);
+                // 승격된 사용자에게 알림 추가
+                User promotedUser = userManager.getUserById(nextUser);
+                VolunteerProgram p = vpm.getProgramByName(programToCancel);
+                if (promotedUser != null && p != null) {
+                    promotedUser.addNotification("[" + p.getName() + "] 봉사 예약이 대기에서 확정되었습니다!");
+                    userManager.saveUsers();
                 }
             }
             saveReservations();
-            userManager.saveUsers();
+            return true; // 성공
+        } else {
+            System.out.println("이미 취소되었거나 잘못된 요청입니다.");
+            return false;
         }
     }
 
-    // 예약 취소 (GUI/내부 로직용, 단일 예약명)
-    public boolean cancelReservation(String userId, String progName) {
-        boolean changed = false;
-        // 예약자에서 삭제
-        List<String> resList = reservations.get(progName);
-        if (resList != null && resList.remove(userId)) {
-            changed = true;
-            // 대기자 승격
-            List<String> waitList = waitingList.get(progName);
-            if (waitList != null && !waitList.isEmpty()) {
-                String next = waitList.remove(0);
-                resList.add(next);
-                if (waitList.isEmpty()) waitingList.remove(progName);
-            }
+    public void showMyReservations(String userId, VolunteerProgramManager vpm, UserManager userManager) {
+        List<String> myPrograms = new ArrayList<>();
+        for (String program : reservations.keySet()) {
+            if (reservations.get(program).contains(userId)) myPrograms.add(program);
         }
-        // 대기자에서 삭제
-        List<String> waitList = waitingList.get(progName);
-        if (waitList != null && waitList.remove(userId)) {
-            changed = true;
-            if (waitList.isEmpty()) waitingList.remove(progName);
+        if (myPrograms.isEmpty()) {
+            System.out.println("예약된 봉사 프로그램이 없습니다.");
+            return;
         }
-        if (changed) saveReservations();
-        return changed;
+        for (int i = 0; i < myPrograms.size(); i++) {
+            VolunteerProgram p = vpm.getProgramByName(myPrograms.get(i));
+            System.out.printf("%d. %s (%s, %s, %s)\n", i + 1, p.getName(), p.getDate(), p.getLocation(), p.getCategory());
+        }
+        System.out.print("봉사 예약을 취소하시겠습니까?(Y/N) >> ");
+        String choice = scanner.nextLine();
+        if (choice.equalsIgnoreCase("Y")) {
+            cancelReservation(userId, vpm, myPrograms, userManager);
+        } else {
+            System.out.println("메인화면으로 돌아갑니다.");
+        }
+    }
+
+    public void makeReservation(String userId, VolunteerProgramManager vpm) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("예약할 프로그램명을 입력하세요: ");
+        String progName = scanner.nextLine().trim();
+        boolean result = makeReservation(userId, vpm, progName);
+        if (result) {
+            System.out.println("예약 요청이 완료되었습니다. (정원 초과 시 대기자로 등록됩니다.)");
+        } else {
+            System.out.println("이미 예약 또는 대기 중이거나 신청할 수 없습니다.");
+        }
     }
 }

@@ -24,7 +24,7 @@ public class VolunteerServiceGUI extends JFrame {
     public VolunteerServiceGUI() {
         setTitle("봉사 신청 시스템");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 450);
+        setSize(700, 500);
         setLocationRelativeTo(null);
 
         userManager.loadUsers();
@@ -56,7 +56,7 @@ public class VolunteerServiceGUI extends JFrame {
     public ReservationManager getReservationManager() { return reservationManager; }
     public User getLoggedInUser() { return loggedInUser; }
     public void setLoggedInUser(User user) { this.loggedInUser = user; }
-    
+
     public void showLoginPanel() { cardLayout.show(cardPanel, "login"); loginPanel.onShow(); }
     public void showRegisterPanel() { cardLayout.show(cardPanel, "register"); registerPanel.onShow(); }
     public void showMainMenuPanel() { cardLayout.show(cardPanel, "mainMenu"); mainMenuPanel.onShow(); }

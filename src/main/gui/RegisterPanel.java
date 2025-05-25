@@ -2,6 +2,7 @@ package main.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.regex.Pattern;
 import main.Volunteer;
 import main.Admin;
 
@@ -13,6 +14,7 @@ public class RegisterPanel extends BasePanel {
 
     public RegisterPanel(main.VolunteerServiceGUI mainFrame) {
         super(mainFrame);
+        initializePanel();
     }
 
     @Override
@@ -34,16 +36,12 @@ public class RegisterPanel extends BasePanel {
 
         gbc.gridx = 0; gbc.gridy = 0; add(new JLabel("이름:"), gbc);
         gbc.gridx = 1; add(nameField, gbc);
-
         gbc.gridx = 0; gbc.gridy = 1; add(new JLabel("전화번호:"), gbc);
         gbc.gridx = 1; add(phoneField, gbc);
-
         gbc.gridx = 0; gbc.gridy = 2; add(new JLabel("아이디:"), gbc);
         gbc.gridx = 1; add(idField, gbc);
-
         gbc.gridx = 0; gbc.gridy = 3; add(new JLabel("비밀번호:"), gbc);
         gbc.gridx = 1; add(pwField, gbc);
-
         gbc.gridx = 0; gbc.gridy = 4; add(new JLabel("가입 유형:"), gbc);
         gbc.gridx = 1;
         JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -67,6 +65,10 @@ public class RegisterPanel extends BasePanel {
             showMessage("모든 항목을 입력하세요.");
             return;
         }
+        if (!Pattern.matches("\\d{3}-\\d{3,4}-\\d{4}", phone)) {
+            showMessage("전화번호는 010-1234-5678 형식으로 입력하세요.");
+            return;
+        }
         if (userManager.getUserById(id) != null) {
             showMessage("이미 존재하는 아이디입니다.");
             return;
@@ -88,6 +90,7 @@ public class RegisterPanel extends BasePanel {
 
     @Override
     public void onShow() {
+        super.onShow();
         nameField.setText("");
         phoneField.setText("");
         idField.setText("");

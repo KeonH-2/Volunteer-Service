@@ -22,9 +22,6 @@ public class MainFrame extends JFrame {
         panelMap.put("login", new LoginPanel(mainFrame));
         panelMap.put("register", new RegisterPanel(mainFrame));
         panelMap.put("mainMenu", new MainMenuPanel(mainFrame));
-        panelMap.put("admin", new AdminPanel(mainFrame));
-        panelMap.put("user", new UserPanel(mainFrame));
-        panelMap.put("volunteer", new VolunteerPanel(mainFrame));
 
         for (Map.Entry<String, BasePanel> entry : panelMap.entrySet()) {
             cardPanel.add(entry.getValue(), entry.getKey());

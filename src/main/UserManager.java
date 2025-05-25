@@ -5,11 +5,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class UserManager {
     private List<User> users = new ArrayList<>();
     private final String USER_FILE = "users.json";
-    
+
     public void registerUser() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n[회원가입]");
@@ -47,7 +48,7 @@ public class UserManager {
         saveUsers();
         System.out.println((isAdmin ? "관리자" : "봉사자") + " 회원가입이 완료되었습니다.");
     }
-    
+
     public User login() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("아이디를 입력하세요: ");
@@ -73,7 +74,6 @@ public class UserManager {
         return null;
     }
 
-    
     public void loadUsers() {
         users.clear();
         try (FileReader reader = new FileReader(USER_FILE)) {
@@ -103,6 +103,7 @@ public class UserManager {
             }
         } catch (Exception e) { /* 파일 없을 때 등 무시 */ }
     }
+
     public void updateUserInfo(User user) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -154,7 +155,6 @@ public class UserManager {
             saveUsers();
         }
     }
-
 
     public void saveUsers() {
         JSONArray userArray = new JSONArray();
