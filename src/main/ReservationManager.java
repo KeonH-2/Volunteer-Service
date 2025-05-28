@@ -191,7 +191,8 @@ public class ReservationManager {
     public void showMyReservations(String userId, VolunteerProgramManager vpm, UserManager userManager) {
         List<String> myPrograms = new ArrayList<>();
         for (String program : reservations.keySet()) {
-            if (reservations.get(program).contains(userId)) myPrograms.add(program);
+            List<String> resList = reservations.get(program);
+            if (resList != null && resList.contains(userId)) myPrograms.add(program);
         }
         if (myPrograms.isEmpty()) {
             System.out.println("예약된 봉사 프로그램이 없습니다.");
@@ -199,16 +200,21 @@ public class ReservationManager {
         }
         for (int i = 0; i < myPrograms.size(); i++) {
             VolunteerProgram p = vpm.getProgramByName(myPrograms.get(i));
-            System.out.printf("%d. %s (%s, %s, %s)\n", i + 1, p.getName(), p.getDate(), p.getLocation(), p.getCategory());
+            if (p != null) {
+                System.out.printf("%d. %s (%s, %s, %s)\n", i + 1, p.getName(), p.getDate(), p.getLocation(), p.getCategory());
+            } else {
+                System.out.printf("%d. %s (프로그램 정보 없음)\n", i + 1, myPrograms.get(i));
+            }
         }
         System.out.print("봉사 예약을 취소하시겠습니까?(Y/N) >> ");
         String choice = scanner.nextLine();
-        if (choice.equalsIgnoreCase("Y")) {
+        if (choice != null && choice.equalsIgnoreCase("Y")) {
             cancelReservation(userId, vpm, myPrograms, userManager);
         } else {
             System.out.println("메인화면으로 돌아갑니다.");
         }
     }
+
 
     public void makeReservation(String userId, VolunteerProgramManager vpm) {
         Scanner scanner = new Scanner(System.in);

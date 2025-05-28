@@ -7,7 +7,6 @@ public class MyPagePanel extends BasePanel {
     private JLabel nameLabel = new JLabel();
     private JLabel phoneLabel = new JLabel();
     private JLabel idLabel = new JLabel();
-    private JLabel hoursLabel = new JLabel();
 
     public MyPagePanel(main.VolunteerServiceGUI mainFrame) {
         super(mainFrame);
@@ -38,13 +37,10 @@ public class MyPagePanel extends BasePanel {
         nameLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
         phoneLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
         idLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-        hoursLabel.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-        hoursLabel.setForeground(new Color(0, 102, 204));
 
         nameLabel.setIcon(UIManager.getIcon("FileView.fileIcon"));
         phoneLabel.setIcon(UIManager.getIcon("FileView.directoryIcon"));
         idLabel.setIcon(UIManager.getIcon("FileChooser.detailsViewIcon"));
-        hoursLabel.setIcon(UIManager.getIcon("OptionPane.informationIcon"));
 
         infoPanel.add(nameLabel);
         infoPanel.add(Box.createVerticalStrut(10));
@@ -52,7 +48,6 @@ public class MyPagePanel extends BasePanel {
         infoPanel.add(Box.createVerticalStrut(10));
         infoPanel.add(idLabel);
         infoPanel.add(Box.createVerticalStrut(20));
-        infoPanel.add(hoursLabel);
 
         // 버튼 패널 (오른쪽 정렬)
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
@@ -78,7 +73,6 @@ public class MyPagePanel extends BasePanel {
             nameLabel.setText("  이름: " + loggedInUser.getName());
             phoneLabel.setText("  전화번호: " + loggedInUser.getPhonenumber());
             idLabel.setText("  아이디: " + loggedInUser.getId());
-            hoursLabel.setText("  누적 봉사시간: " + loggedInUser.getTotalVolunteerHours() + "시간");
         }
     }
 

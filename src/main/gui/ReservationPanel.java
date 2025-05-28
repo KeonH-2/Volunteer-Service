@@ -26,17 +26,14 @@ public class ReservationPanel extends BasePanel {
         add(new JScrollPane(table), BorderLayout.CENTER);
 
         JButton cancelBtn = new JButton("예약취소");
-        JButton refreshBtn = new JButton("새로고침");
         JButton backBtn = new JButton("메인으로");
 
         JPanel btnPanel = new JPanel();
         btnPanel.add(cancelBtn);
-        btnPanel.add(refreshBtn);
         btnPanel.add(backBtn);
         add(btnPanel, BorderLayout.SOUTH);
 
         cancelBtn.addActionListener(e -> cancelReservation());
-        refreshBtn.addActionListener(e -> refreshTable());
         backBtn.addActionListener(e -> mainFrame.showMainMenuPanel());
     }
 
